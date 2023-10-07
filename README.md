@@ -1,0 +1,79 @@
+# 3DAMNA - PGL > UT3 > Counter App With State Management ([Zustand](https://zustand-demo.pmnd.rs/))
+
+Esta es una aplicación de contador simple desarrollada en Expo. La aplicación muestra un contador y permite al usuario aumentar o disminuir el valor del contador haciendo clic en botones. También se puede cambiar el idioma entre Español e Inglés.
+
+## Características
+
+- Muestra un contador en pantalla.
+- Permite al usuario aumentar o disminuir el contador haciendo clic en botones.
+- Cambiar idioma entre español e inglés.
+- La aplicación utiliza el manejo de estados con Zustand para gestionar el estado del contador de manera global y compartida entre componentes.
+
+## Zustand
+
+Zustand es una biblioteca de gestión de estado mínima y liviana para React que facilita la administración del estado global en tus aplicaciones. Puedes obtener más información sobre Zustand en su [sitio de documentación oficial](https://github.com/pmndrs/zustand).
+
+## Interacción y Componentes
+
+La aplicación utiliza algunos conceptos clave de interacción y componentes en React Native:
+
+- Utiliza botones (`FAB`) de [react-native-elements](https://reactnativeelements.com/) para permitir al usuario interactuar con la aplicación y modificar el contador.
+- Los componentes de texto (`Text`) se utilizan para mostrar el valor actual del contador en la pantalla.
+
+Para obtener más información sobre cómo agregar interactividad a las aplicaciones de React Native y aprender sobre los componentes disponibles, consulta la [documentación oficial de react-native-elements](https://reactnativeelements.com/docs/3.4.2/fab).
+
+## Navegación por Pestañas
+
+Si deseas explorar la navegación por pestañas en Expo, puedes consultar la documentación de [Tabs de Expo Router](https://docs.expo.dev/router/advanced/tabs/).
+
+## Ejemplo de Uso
+
+### 1. Configuración de Zustand
+
+Primero, configuramos nuestro estado global utilizando Zustand en un archivo separado, como `CounterStore.ts`.
+
+```javascript
+import create from 'zustand';
+
+type CounterStoreType = {
+  count: number;
+  increment: () => void;
+  decrement: () => void;
+};
+
+export const useCounterStore = create<CounterStoreType>((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  decrement: () => set((state) => ({ count: state.count - 1 })),
+}));
+```
+
+### 2. Uso de Zustand en Componentes
+
+Ahora, podemos usar el estado global de Zustand en nuestros componentes. Por ejemplo:
+
+```javascript
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
+import { useCounterStore } from './CounterStore';
+
+const CounterApp = () => {
+  const { count, increment, decrement } = useCounterStore();
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.counterText}>{count}</Text>
+      <Button
+        title="Increment"
+        onPress={increment}
+      />
+      <Button
+        title="Decrement"
+        onPress={decrement}
+      />
+    </View>
+  );
+};
+
+export default CounterApp;
